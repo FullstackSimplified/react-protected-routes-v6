@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import Auth from "./pages/auth";
+import Dashboard from "./pages/dashboard";
+import Profile from "./pages/profile";
 
-function App() {
+const App = () => {
+  const [auth, setAuth] = useState(null);
+
+  useEffect(() => {
+    let user = localStorage.getItem("user");
+    user && JSON.parse(user) ? setAuth(true) : setAuth(false);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("user", auth);
+  }, [auth]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      {!auth && (
+        <Route
+          path="/auth"
+          element={<Auth authenticate={() => setAuth(true)} />}
+        />
+      )}
+
+      {auth && (
+        <>
+          <Route
+            path="/profile"
+            element={<Profile logout={() => setAuth(false)} />}
+          />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </>
+      )}
+      <Route path="*" element={<Navigate to={auth ? "/profile" : "/auth"} />} />
+    </Routes>
   );
-}
+};
 
 export default App;
