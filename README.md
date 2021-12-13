@@ -2,7 +2,7 @@
 
 ### This repo shows how to use React Router v6 to create public and private routes in your react web app
 
-### Youtube Tutorial Link -
+### Youtube Tutorial Link - https://youtu.be/rGmJYIUwxdo
 
 #### 📚 Materials/References:
 
